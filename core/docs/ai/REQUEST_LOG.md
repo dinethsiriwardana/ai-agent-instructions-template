@@ -1,0 +1,78 @@
+# AI Request Log
+
+> **For AI Agents:** After completing every task or user prompt, record the request in the matching category below. Keep each section in reverse chronological order (newest entry at the top of that section). If the request revealed a new preference or correction, also update `docs/ai/STYLE_AND_SKILLS.md`.
+
+---
+
+## Request Categories
+
+- [1. Feature Requests](#1-feature-requests): New user-facing capabilities, API endpoints, or screens.
+- [2. Bugfixes & Troubleshooting](#2-bugfixes--troubleshooting): Resolving errors, edge-case bugs, or broken tests.
+- [3. Refactoring & Code Quality](#3-refactoring--code-quality): Code reorganization, performance tuning, and DRYing up logic.
+- [4. Architecture & Technical Decisions](#4-architecture--technical-decisions): Designing systems, choosing libraries, schema migrations, and contracts.
+- [5. Tooling, Config & DevOps](#5-tooling-config--devops): CI/CD pipelines, package upgrades, Docker, env files, and linting rules.
+
+---
+
+### Entry Format Reference
+
+```markdown
+### [YYYY-MM-DD HH:MM] Brief Title
+
+- **Task / Goal:** What the user asked for.
+- **Summary of Changes:** Concise bullet points of what was modified or added.
+- **Files Modified:** Clickable links to relevant files.
+- **Learnings & Style Alignment:** Any specific developer pattern followed or newly learned preference.
+```
+
+---
+
+## 1. Feature Requests
+
+<!-- Add new feature entries below (newest first) -->
+
+_No feature requests logged yet._
+
+---
+
+## 2. Bugfixes & Troubleshooting
+
+<!-- Add new bugfix entries below (newest first) -->
+
+_No bugfix requests logged yet._
+
+---
+
+## 3. Refactoring & Code Quality
+
+<!-- Add new refactoring entries below (newest first) -->
+
+_No refactoring requests logged yet._
+
+---
+
+## 4. Architecture & Technical Decisions
+
+<!-- Add new architecture entries below (newest first) -->
+
+_No architecture requests logged yet._
+
+---
+
+## 5. Tooling, Config & DevOps
+
+<!-- Add new tooling/config entries below (newest first) -->
+
+### [2026-10-28 20:51] Remove All Remaining GitHub Actions Workflows
+
+- **Task / Goal:** Remove all remaining GitHub Actions workflows across all templates.
+- **Summary of Changes:** Deleted `templates/nextjs/.github/` and `templates/nestjs/.github/`; updated stack READMEs, root `README.md`, and root `AGENTS.md`.
+- **Files Modified:** [templates/nextjs/README.md](file:///Users/dinethsiriwardana/Downloads/nextjs-template/templates/nextjs/README.md), [templates/nestjs/README.md](file:///Users/dinethsiriwardana/Downloads/nextjs-template/templates/nestjs/README.md), [README.md](file:///Users/dinethsiriwardana/Downloads/nextjs-template/README.md), [AGENTS.md](file:///Users/dinethsiriwardana/Downloads/nextjs-template/AGENTS.md).
+- **Learnings & Style Alignment:** User prefers templates to stay decoupled from CI providers, focusing purely on local quality gates.
+
+### [2026-10-28 20:46] Remove Flutter CI Workflow
+
+- **Task / Goal:** Remove GitHub Actions workflow from the Flutter template per user request.
+- **Summary of Changes:** Deleted `templates/flutter/.github/workflows/ci.yml` and updated `templates/flutter/README.md` and root `README.md`.
+- **Files Modified:** [templates/flutter/README.md](file:///Users/dinethsiriwardana/Downloads/nextjs-template/templates/flutter/README.md), [README.md](file:///Users/dinethsiriwardana/Downloads/nextjs-template/README.md).
+- **Learnings & Style Alignment:** Keep Flutter template flexible without imposing default GitHub Actions runner environments.
