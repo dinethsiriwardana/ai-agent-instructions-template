@@ -56,12 +56,17 @@ Deviations from this table must be recorded in `docs/DECISIONS.md` before implem
 8. **Single CSS file**: never create separate or per-page CSS files. All tokens, theme definitions and application styles live in `src/app/globals.css`.
 9. **Pure core logic**: domain algorithms (scheduling, pricing, scoring, etc.) are pure functions with no DB, HTTP or framework imports, so they are trivially testable.
 10. **Portable by design**: avoid hard dependencies on one hosting vendor. Business logic must not import platform-specific SDKs.
+11. **Centralized text & error copy**: never hardcode user-visible strings, UI labels, button copy, or error messages in components, routes, or services. All words and error messages live in `locales/{lang}.json` (e.g. `locales/en.json`). To change wording or switch languages, developers update this single place.
 
 ---
 
 ## 3. Folder Structure
 
 ```
+locales/                          # Single source of truth for ALL text, words & error messages
+├── en.json                       # Default language dictionary (common, nav, auth, feedback, errors)
+└── es.json                       # Secondary language translation
+
 src/
 ├── app/                          # Routing ONLY (no business logic)
 │   ├── (auth)/login/page.tsx
@@ -256,13 +261,14 @@ export const POST = createHandler({
 
 ### 6.2 Standard error type: `server/http/errors.ts`
 
-Throw `AppError.notFound("Product")`, `AppError.conflict(...)`, `AppError.badRequest(...)` anywhere in services. **Never** return error responses manually.
+Throw `AppError.notFound("Product")`, `AppError.conflict(...)`, `AppError.badRequest(...)` anywhere in services. **Never** return error responses manually. Error messages map to the centralized dictionary in `locales/{lang}.json` (`errors.*`) so developers can update all error messages in one place without changing server logic.
 
 ```ts
 // server/http/errors.ts
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
 import { logger } from "@/server/lib/logger";
+import dictionary from "locales/en.json";
 
 export type ErrorCode =
   | "BAD_REQUEST" | "UNAUTHORIZED" | "FORBIDDEN" | "NOT_FOUND"
@@ -278,20 +284,20 @@ export class AppError extends Error {
     super(message);
     this.name = "AppError";
   }
-  static badRequest(message: string, details?: unknown) { return new AppError("BAD_REQUEST", 400, message, details); }
-  static unauthorized(message = "Authentication required") { return new AppError("UNAUTHORIZED", 401, message); }
-  static forbidden(message = "You do not have access to this resource") { return new AppError("FORBIDDEN", 403, message); }
-  static notFound(label: string) { return new AppError("NOT_FOUND", 404, `${label} not found`); }
-  static conflict(message: string) { return new AppError("CONFLICT", 409, message); }
-  static rateLimited() { return new AppError("RATE_LIMITED", 429, "Too many requests. Try again later."); }
-  static upstream(message: string, details?: unknown) { return new AppError("UPSTREAM_ERROR", 502, message, details); }
+  static badRequest(message = dictionary.errors.badRequest, details?: unknown) { return new AppError("BAD_REQUEST", 400, message, details); }
+  static unauthorized(message = dictionary.errors.unauthorized) { return new AppError("UNAUTHORIZED", 401, message); }
+  static forbidden(message = dictionary.errors.forbidden) { return new AppError("FORBIDDEN", 403, message); }
+  static notFound(label: string) { return new AppError("NOT_FOUND", 404, `${label} ${dictionary.common.none.toLowerCase()}`); }
+  static conflict(message = dictionary.errors.conflict) { return new AppError("CONFLICT", 409, message); }
+  static rateLimited(message = dictionary.errors.rateLimited) { return new AppError("RATE_LIMITED", 429, message); }
+  static upstream(message = dictionary.errors.upstreamError, details?: unknown) { return new AppError("UPSTREAM_ERROR", 502, message, details); }
 }
 
 export function handleError(e: unknown): NextResponse {
   if (e instanceof AppError) return body(e.code, e.message, e.details, e.status);
-  if (e instanceof ZodError) return body("BAD_REQUEST", "Validation failed", e.issues, 400);
+  if (e instanceof ZodError) return body("BAD_REQUEST", dictionary.errors.badRequest, e.issues, 400);
   logger.error({ err: e }, "Unhandled error");
-  return body("INTERNAL", "Something went wrong. Try again later.", null, 500);
+  return body("INTERNAL", dictionary.errors.internalServerError, null, 500);
 }
 
 function body(code: ErrorCode, message: string, details: unknown, status: number) {

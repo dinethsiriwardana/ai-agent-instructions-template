@@ -227,3 +227,14 @@ Every view and component must work on mobile viewports (320px to 430px) as well 
 
 - Modals fit the viewport (`w-[calc(100vw-32px)]` or full-width sheet) with `max-h-[85vh]` and `overflow-y-auto` on the body.
 - Action buttons (Submit, Cancel, Save) stay visible in a sticky footer, not pushed below the fold or hidden behind the on-screen keyboard.
+
+---
+
+## 11. Centralized Language & Copy Dictionary
+
+All user-visible words, labels, button text, empty state messages, placeholders, notifications, and error messages are centralized in `locales/{lang}.json` (e.g. `locales/en.json`).
+
+### Rules:
+1. **Zero hardcoded text:** Never write inline text strings or error messages directly inside components, pages, or form fields. Always read from the centralized dictionary.
+2. **Single place to update copy:** Developers can edit any word, button label, or error message across the entire application by modifying `locales/en.json`.
+3. **Easy language switching:** To switch languages or add new translations (e.g. `locales/es.json`), copy the keys and translate the values. The UI and error handlers reference identical key paths.

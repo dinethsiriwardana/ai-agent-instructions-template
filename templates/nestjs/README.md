@@ -15,6 +15,7 @@ NestJS REST API. This repository follows a documented architecture and workflow.
 | [docs/TASK_LIST.md](./docs/TASK_LIST.md) | Progress tracker |
 | [docs/DECISIONS.md](./docs/DECISIONS.md) | Architecture decision records |
 | [docs/ISSUES.md](./docs/ISSUES.md) | Parked blockers |
+| [locales/en.json](./locales/en.json) | Centralized dictionary for all API error messages & status copy |
 
 ## First steps
 

@@ -1,0 +1,48 @@
+{
+  "errors": {
+    "badRequest": "La solicitud contiene datos inválidos o con formato incorrecto.",
+    "unauthorized": "Se requieren credenciales de autenticación válidas.",
+    "forbidden": "No tiene permiso para acceder a este recurso.",
+    "notFound": "No se encontró el recurso solicitado.",
+    "conflict": "No se pudo completar la solicitud debido a un conflicto con el estado actual del recurso.",
+    "rateLimited": "Demasiadas solicitudes. Intente nuevamente después del período de espera.",
+    "upstreamError": "Un servicio externo no pudo procesar la solicitud.",
+    "internalServerError": "Ocurrió un error inesperado en el servidor.",
+    "unprocessableEntity": "El servidor no puede procesar las instrucciones enviadas.",
+    "validationFailed": "Falló la validación de los datos enviados."
+  },
+  "validation": {
+    "required": "El campo '{field}' es obligatorio.",
+    "mustBeString": "El campo '{field}' debe ser una cadena de texto.",
+    "mustBeNumber": "El campo '{field}' debe ser un valor numérico.",
+    "invalidEmail": "El campo '{field}' debe ser un correo electrónico válido.",
+    "invalidUuid": "El campo '{field}' debe ser un UUID válido.",
+    "positiveNumber": "El campo '{field}' debe ser un número positivo.",
+    "stringMinLength": "El campo '{field}' debe tener al menos {min} caracteres.",
+    "stringMaxLength": "El campo '{field}' no debe exceder {max} caracteres.",
+    "invalidDate": "El campo '{field}' debe ser una fecha ISO 8601 válida."
+  },
+  "auth": {
+    "invalidCredentials": "El correo o la contraseña proporcionados son incorrectos.",
+    "tokenExpired": "El token de acceso ha expirado.",
+    "tokenInvalid": "El token de autenticación es inválido o tiene un formato incorrecto.",
+    "insufficientPermissions": "Su rol actual no tiene permisos para este endpoint.",
+    "accountLocked": "Esta cuenta ha sido bloqueada temporalmente por seguridad.",
+    "sessionTerminated": "Su sesión ha finalizado. Por favor inicie sesión de nuevo."
+  },
+  "common": {
+    "operationSuccessful": "Operación completada con éxito.",
+    "resourceCreated": "Recurso creado con éxito.",
+    "resourceUpdated": "Recurso actualizado con éxito.",
+    "resourceDeleted": "Recurso eliminado con éxito.",
+    "recordFound": "Registro obtenido con éxito.",
+    "noRecordsFound": "No se encontraron registros coincidentes."
+  },
+  "health": {
+    "serviceHealthy": "El servicio está operativo y saludable.",
+    "databaseConnected": "La conexión con la base de datos está activa.",
+    "databaseDisconnected": "Falló la conexión con la base de datos.",
+    "memoryUsageNormal": "El uso de memoria está dentro de los límites aceptables."
+  }
+}
+

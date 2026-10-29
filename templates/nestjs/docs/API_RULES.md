@@ -115,3 +115,14 @@ Health endpoints are unversioned, public and never return secrets.
 - Never remove or rename a field or change its type inside a major version.
 - Deprecate first: mark in OpenAPI, announce in the changelog, keep for at least one release cycle.
 - Webhooks you send are versioned and signed; retries use exponential backoff.
+
+---
+
+## 10. Localization & Error Messages Dictionary
+
+All API error messages, validation descriptions, auth messages, and operational response text are managed centrally in `locales/{lang}.json` (e.g. `locales/en.json`).
+
+### Rules:
+1. **Zero hardcoded error strings:** Never write user-visible error messages or validation strings directly in controllers, services, or guards. Reference keys from `locales/en.json`.
+2. **Single place to update copy:** Developers can adjust any error message, status description, or validation text across the entire backend by modifying `locales/en.json`.
+3. **Multi-language support:** Additional languages (e.g. `locales/es.json`) map to identical keys, allowing the API to resolve messages based on the client's `Accept-Language` header or project default locale.

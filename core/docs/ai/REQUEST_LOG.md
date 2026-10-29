@@ -31,7 +31,25 @@
 
 <!-- Add new feature entries below (newest first) -->
 
-_No feature requests logged yet._
+### [2026-10-29 19:30] Centralized Localization, Words, and Error Messages System
+
+- **Task / Goal:** List all words, error messages, and every text in one place with language across all stacks (Next.js, NestJS, Flutter) so developers can easily change language and update text from one place.
+- **Summary of Changes:**
+  - Added starter language dictionaries for Next.js (`templates/nextjs/locales/en.json`, `es.json`).
+  - Added starter language dictionaries for NestJS (`templates/nestjs/locales/en.json`, `es.json`).
+  - Added starter ARB resource bundles and `l10n.yaml` for Flutter (`templates/flutter/lib/l10n/app_en.arb`, `app_es.arb`).
+  - Updated generator script `scripts/init-template.sh` to copy and replace placeholders in `.json` and `.arb` files.
+  - Updated architectural guidelines (`AGENTS.md`) and UI/API rules across Next.js, NestJS, and Flutter prohibiting hardcoded strings and mandating the centralized dictionary.
+- **Files Modified:**
+  - [templates/nextjs/locales/en.json](file:///Users/dinethsiriwardana/Downloads/nextjs-template/templates/nextjs/locales/en.json)
+  - [templates/nextjs/locales/es.json](file:///Users/dinethsiriwardana/Downloads/nextjs-template/templates/nextjs/locales/es.json)
+  - [templates/nestjs/locales/en.json](file:///Users/dinethsiriwardana/Downloads/nextjs-template/templates/nestjs/locales/en.json)
+  - [templates/nestjs/locales/es.json](file:///Users/dinethsiriwardana/Downloads/nextjs-template/templates/nestjs/locales/es.json)
+  - [templates/flutter/l10n.yaml](file:///Users/dinethsiriwardana/Downloads/nextjs-template/templates/flutter/l10n.yaml)
+  - [templates/flutter/lib/l10n/app_en.arb](file:///Users/dinethsiriwardana/Downloads/nextjs-template/templates/flutter/lib/l10n/app_en.arb)
+  - [templates/flutter/lib/l10n/app_es.arb](file:///Users/dinethsiriwardana/Downloads/nextjs-template/templates/flutter/lib/l10n/app_es.arb)
+  - [scripts/init-template.sh](file:///Users/dinethsiriwardana/Downloads/nextjs-template/scripts/init-template.sh)
+- **Learnings & Style Alignment:** Centralized localization is the single source of truth for words, button labels, and error messages; never hardcode strings in UI components, controllers, or error types.
 
 ---
 

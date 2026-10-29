@@ -69,19 +69,31 @@ This repository intentionally ships **architecture standards, documentation temp
 
 ---
 
-## 3. Quickstart: Generating a New Project
+## 3. Quickstart: Setting Up a Project
 
-You can use this repository as a **GitHub Template Repository** (click "Use this template" on GitHub), or clone it locally.
+### Option A: One-Liner Inside an Existing App (Recommended)
+First, create your project using the official framework CLI, then run the setup script inside your project directory:
 
-### Interactive Mode
+```bash
+# Example: Flutter
+flutter create myapp
+cd myapp
+
+# Run the setup CLI (downloads instructions, configures rules, and installs all packages)
+bash <(curl -fsSL https://raw.githubusercontent.com/dinethsiriwardana/ai-agent-instructions-template/main/scripts/init-template.sh)
+```
+
+*(Works identically after `pnpm create next-app myapp && cd myapp` or `npx @nestjs/cli new myapp && cd myapp`!)*
+
+### Option B: From a Local Clone (Interactive Mode)
 Run the generator without flags to choose your stack and enter project details via prompts:
 
 ```bash
 bash scripts/init-template.sh
 ```
 
-### Headless / CLI Mode
-Pass options directly to automate project creation in scripts or CI:
+### Option C: Headless / CLI Mode
+Pass options directly to automate project setup in scripts or CI:
 
 ```bash
 bash scripts/init-template.sh \
@@ -89,13 +101,14 @@ bash scripts/init-template.sh \
   --target <target-directory> \
   --name "Project Name" \
   --description "One-sentence pitch" \
-  --owner "Owner Name"
+  --owner "Owner Name" \
+  [--install | --no-install]
 ```
 
-#### What the Generator Does:
-1. **Safety Check**: Ensures the `--target` folder is empty (an existing `.git/` folder is allowed).
-2. **Copies Shared Core**: Merges `core/` (`PROJECT_GUIDELINES.md`, `ISSUES.md`, PR template).
-3. **Copies Chosen Stack**: Merges `templates/<stack>/` files into the target folder.
+#### What the Setup CLI Does:
+1. **Remote or Local Resolution**: Automatically clones [`dinethsiriwardana/ai-agent-instructions-template`](https://github.com/dinethsiriwardana/ai-agent-instructions-template) to a temporary directory when run via `curl`, or uses the local repository.
+2. **Auto-Detects Stack & Project Name**: Inspects `pubspec.yaml` (`flutter`) or `package.json` (`nextjs` / `nestjs`) in the target directory.
+3. **Copies Shared Core & Chosen Stack**: Merges `core/` (`PROJECT_GUIDELINES.md`, `ISSUES.md`, `docs/ai/*`, PR template) and `templates/<stack>/` (`AGENTS.md`, `docs/*`, `l10n`/`locales`, `README.md`). Existing framework `README.md` files are backed up to `README.framework.md`.
 4. **Replaces Placeholders**:
    - `{{PROJECT_NAME}}`: Product name.
    - `{{ONE_LINE_DESCRIPTION}}`: Short summary.
@@ -103,7 +116,7 @@ bash scripts/init-template.sh \
    - `{{STACK_LABEL}}`: Injected from `stack.conf` (e.g., `Next.js`, `NestJS`, `Flutter`).
    - `{{QUALITY_GATE}}`: Injected from `stack.conf` (the exact verification command string).
    - `YYYY-MM-DD`: Current date injected into `PROJECT_PLAN.md` and `DECISIONS.md`.
-5. **Prints Next Steps**: Points you to the newly generated `README.md` in the target folder with precise framework scaffolding commands.
+5. **Installs Stack Packages & Configures Scripts**: Runs `setup_stack` from `templates/<stack>/stack.conf` to install all required runtime/dev packages, configure `package.json` scripts or `pubspec.yaml` localization flags (`flutter gen-l10n`), and scaffold standard architecture folders.
 
 ---
 
@@ -285,10 +298,12 @@ To add another stack to this template:
 
 ### Version History
 
-**TEMPLATE_VERSION: 2.2.0**
+**TEMPLATE_VERSION: 2.4.0**
 
 | Version | Description |
 |---|---|
+| **2.4.0** | Enhanced `scripts/init-template.sh` and `templates/<stack>/stack.conf` to support remote GitHub one-liner execution (`curl`), existing-project stack auto-detection (`flutter create myapp && cd myapp`), and automatic package/dependency installation (`setup_stack`). |
+| **2.3.0** | Added centralized language, copy, and error message dictionaries (`locales/` and `lib/l10n/`) across Next.js, NestJS, and Flutter. |
 | **2.2.0** | Added `docs/ai/` memory system (`STYLE_AND_SKILLS.md` and `REQUEST_LOG.md`) for continuous AI learning, adaptive code styling, and categorized prompt tracking. |
 | **2.1.0** | Comprehensive root documentation, template repo `AGENTS.md`, and clean root directory structure. |
 | **2.0.0** | Multi-stack architecture: shared `core/`, stack folders for Next.js, NestJS, Flutter, and stack-aware CLI generator. |

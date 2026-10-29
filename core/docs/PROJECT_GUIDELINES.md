@@ -60,6 +60,7 @@ git checkout -b feat/<feature-name>
 
 - Follow `AGENTS.md` (layers, folder structure, size limits, tests).
 - Follow the UI or API rules document of the stack (`docs/UI_RULES.md` or `docs/API_RULES.md`).
+- Centralized copy & error text: never hardcode user-facing strings or error messages; always use the stack's centralized dictionary (`locales/` or `lib/l10n/`) so text and languages can be updated from one place.
 - No emojis in UI text, comments or commit messages.
 - Commit small and often using Conventional Commits (section 3).
 
