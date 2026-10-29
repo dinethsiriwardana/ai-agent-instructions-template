@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Architecture & Project Planning
+    url: https://github.com/
+    about: For architectural decisions or questions, please refer to docs/DECISIONS.md and docs/PROJECT_PLAN.md.
