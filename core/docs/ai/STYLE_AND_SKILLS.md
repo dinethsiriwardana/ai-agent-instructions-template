@@ -55,6 +55,7 @@
 
 - [ ] Giant "god" files or classes exceeding ~250 lines.
 - [ ] Magic numbers and hardcoded string literals (extract to constants, tokens, or enums).
+- [ ] Hardcoding user-visible words, error messages, or UI copy directly into components, controllers, or widgets (always use centralized `locales/` or `lib/l10n/`).
 - [ ] Placing network calls, database queries, or business calculations inside UI components or widgets.
 - [ ] Over-abstraction on first use: do not extract utils or components until the **second** use.
 - [ ] External UI component libraries (MUI, Chakra, Ant) unless explicitly requested.
@@ -69,4 +70,5 @@
 | Date | Topic / Context | What the AI Did | Developer's Preferred Way |
 |---|---|---|---|
 | YYYY-MM-DD | Initial Setup | Default baseline | Follow guidelines in `AGENTS.md` and this profile |
+| 2026-10-29 | Localization & Centralized Copy | Hardcoded strings in error types and scattered UI text | List all words, error messages, and every text in one place by language (e.g. `locales/en.json` or `lib/l10n/app_en.arb`) so developers can easily change language and update text from one place |
 <!-- Append new learned rules below -->

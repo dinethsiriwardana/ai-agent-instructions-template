@@ -15,6 +15,7 @@ Flutter app (Clean Architecture, BLoC, go_router, Dio). This repository follows 
 | [docs/TASK_LIST.md](./docs/TASK_LIST.md) | Progress tracker |
 | [docs/DECISIONS.md](./docs/DECISIONS.md) | Architecture decision records |
 | [docs/ISSUES.md](./docs/ISSUES.md) | Parked blockers |
+| [lib/l10n/app_en.arb](./lib/l10n/app_en.arb) | Centralized ARB dictionary for all words, UI text & error messages |
 
 ## First steps
 

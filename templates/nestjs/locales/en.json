@@ -1,0 +1,48 @@
+{
+  "errors": {
+    "badRequest": "The request contains invalid or malformed data.",
+    "unauthorized": "Authentication credentials are required or invalid.",
+    "forbidden": "You do not have permission to access this resource.",
+    "notFound": "The requested resource was not found.",
+    "conflict": "The request could not be completed due to a conflict with current resource state.",
+    "rateLimited": "Too many requests. Please retry after the cooldown period.",
+    "upstreamError": "An upstream external service failed to fulfill the request.",
+    "internalServerError": "An unexpected error occurred. Please contact support if the issue persists.",
+    "unprocessableEntity": "The server understands the content type but unable to process instructions.",
+    "validationFailed": "Validation failed for the submitted payload."
+  },
+  "validation": {
+    "required": "Field '{field}' is required.",
+    "mustBeString": "Field '{field}' must be a string.",
+    "mustBeNumber": "Field '{field}' must be a numeric value.",
+    "invalidEmail": "Field '{field}' must be a valid email address.",
+    "invalidUuid": "Field '{field}' must be a valid UUID.",
+    "positiveNumber": "Field '{field}' must be a positive number.",
+    "stringMinLength": "Field '{field}' must contain at least {min} characters.",
+    "stringMaxLength": "Field '{field}' must not exceed {max} characters.",
+    "invalidDate": "Field '{field}' must be a valid ISO 8601 date string."
+  },
+  "auth": {
+    "invalidCredentials": "The email or password provided is incorrect.",
+    "tokenExpired": "The access token has expired.",
+    "tokenInvalid": "The provided authentication token is invalid or malformed.",
+    "insufficientPermissions": "Your current role does not have permission for this endpoint.",
+    "accountLocked": "This account has been temporarily locked for security.",
+    "sessionTerminated": "Your session has ended. Please sign in again."
+  },
+  "common": {
+    "operationSuccessful": "Operation completed successfully.",
+    "resourceCreated": "Resource created successfully.",
+    "resourceUpdated": "Resource updated successfully.",
+    "resourceDeleted": "Resource deleted successfully.",
+    "recordFound": "Record retrieved successfully.",
+    "noRecordsFound": "No matching records found."
+  },
+  "health": {
+    "serviceHealthy": "Service is operational and healthy.",
+    "databaseConnected": "Database connectivity is active.",
+    "databaseDisconnected": "Database connection failed.",
+    "memoryUsageNormal": "Memory utilization is within acceptable bounds."
+  }
+}
+

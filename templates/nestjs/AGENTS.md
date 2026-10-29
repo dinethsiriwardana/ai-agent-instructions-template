@@ -56,12 +56,17 @@ Deviations from this table must be recorded in `docs/DECISIONS.md` before implem
 8. **Pure core logic**: domain algorithms live in `domain/` as pure functions with no Nest, DB or HTTP imports.
 9. **Stateless service**: no in-memory session or cache that breaks horizontal scaling. Use the database or an external cache.
 10. **Portable by design**: business logic must not import platform-specific SDKs. Wrap vendors in `integrations/`.
+11. **Centralized error messages & API text**: never hardcode error strings, validation messages, or response texts in controllers, services, or exception filters. All error messages and system copy live in `locales/{lang}.json` (e.g. `locales/en.json`). Developers can change wording or add new languages in this single place without altering server logic.
 
 ---
 
 ## 3. Folder Structure
 
 ```
+locales/                          # Single source of truth for ALL API error messages & response copy
+├── en.json                       # Default dictionary: errors, validation, auth, common, health
+└── es.json                       # Secondary language translation
+
 src/
 ├── main.ts                        # Bootstrap: global pipe, filter, interceptor, swagger, versioning, shutdown hooks
 ├── app.module.ts
@@ -184,24 +189,26 @@ Routes are **private by default**. Opt out with `@Public()`, restrict with `@Rol
 
 ### 6.2 Standard error type: `common/errors/app-error.ts`
 
-Throw `AppError.notFound("Product")`, `AppError.conflict(...)`, `AppError.badRequest(...)` anywhere in services. **Never** build error responses manually or throw bare `HttpException` in feature code.
+Throw `AppError.notFound("Product")`, `AppError.conflict(...)`, `AppError.badRequest(...)` anywhere in services. **Never** build error responses manually or throw bare `HttpException` in feature code. Sourcing default messages from `locales/en.json` ensures all error copy is managed in one place.
 
 ```ts
+import dictionary from "locales/en.json";
+
 export class AppError extends HttpException {
   constructor(readonly code: ErrorCode, status: number, message: string, readonly details: unknown = null) {
     super({ code, message, details }, status);
   }
-  static badRequest(message: string, details?: unknown) { return new AppError("BAD_REQUEST", 400, message, details); }
-  static unauthorized(message = "Authentication required") { return new AppError("UNAUTHORIZED", 401, message); }
-  static forbidden(message = "You do not have access to this resource") { return new AppError("FORBIDDEN", 403, message); }
-  static notFound(label: string) { return new AppError("NOT_FOUND", 404, `${label} not found`); }
-  static conflict(message: string) { return new AppError("CONFLICT", 409, message); }
-  static rateLimited() { return new AppError("RATE_LIMITED", 429, "Too many requests. Try again later."); }
-  static upstream(message: string, details?: unknown) { return new AppError("UPSTREAM_ERROR", 502, message, details); }
+  static badRequest(message = dictionary.errors.badRequest, details?: unknown) { return new AppError("BAD_REQUEST", 400, message, details); }
+  static unauthorized(message = dictionary.errors.unauthorized) { return new AppError("UNAUTHORIZED", 401, message); }
+  static forbidden(message = dictionary.errors.forbidden) { return new AppError("FORBIDDEN", 403, message); }
+  static notFound(label: string) { return new AppError("NOT_FOUND", 404, `${label} ${dictionary.errors.notFound.toLowerCase()}`); }
+  static conflict(message = dictionary.errors.conflict) { return new AppError("CONFLICT", 409, message); }
+  static rateLimited(message = dictionary.errors.rateLimited) { return new AppError("RATE_LIMITED", 429, message); }
+  static upstream(message = dictionary.errors.upstreamError, details?: unknown) { return new AppError("UPSTREAM_ERROR", 502, message, details); }
 }
 ```
 
-`AllExceptionsFilter` maps `AppError`, Zod validation errors and unknown errors to one shape (unknown errors are logged and returned as a generic `INTERNAL` message, never a stack trace):
+`AllExceptionsFilter` maps `AppError`, Zod validation errors and unknown errors to one shape using dictionary strings for defaults:
 
 ```json
 { "success": false, "error": { "code": "NOT_FOUND", "message": "Product not found", "details": null } }

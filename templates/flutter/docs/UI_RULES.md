@@ -97,9 +97,12 @@ Every screen that loads data handles all of: **loading** (skeleton or progress),
 
 ---
 
-## 9. Localization and Copy
+## 9. Localization and Copy (Centralized Dictionary)
 
-- All user-visible text lives in ARB files (`lib/l10n/`), accessed through `AppLocalizations`. No hardcoded strings in widgets.
+- **Single source of truth:** All words, button labels, navigation items, dialog titles, validation messages, and error messages live in `lib/l10n/app_en.arb` (and `app_es.arb` for translations), accessed via `AppLocalizations.of(context)`.
+- **Zero hardcoded strings:** Never write raw strings or error messages in widgets, BLoCs, or mappers.
+- **Single place to update text:** Developers can update any word, error message, or label across the entire app by editing `lib/l10n/app_en.arb`.
+- **Language switching:** To switch languages, update the app locale via `Locale('es')` in `MaterialApp.router`.
 - Use ICU plurals and placeholders; never concatenate translated fragments.
 - Format dates, numbers and currency with `intl` using the active locale.
 - No emojis in UI text, comments or commit messages.

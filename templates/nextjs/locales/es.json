@@ -1,0 +1,96 @@
+{
+  "common": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "create": "Crear",
+    "add": "Agregar",
+    "update": "Actualizar",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "clear": "Limpiar",
+    "confirm": "Confirmar",
+    "back": "Volver",
+    "next": "Siguiente",
+    "submit": "Enviar",
+    "loading": "Cargando...",
+    "view": "Ver",
+    "close": "Cerrar",
+    "refresh": "Actualizar",
+    "actions": "Acciones",
+    "status": "Estado",
+    "name": "Nombre",
+    "details": "Detalles",
+    "yes": "Sí",
+    "no": "No",
+    "all": "Todos",
+    "none": "Ninguno",
+    "optional": "Opcional",
+    "required": "Requerido"
+  },
+  "navigation": {
+    "home": "Inicio",
+    "dashboard": "Panel de control",
+    "settings": "Configuración",
+    "profile": "Perfil",
+    "products": "Productos",
+    "users": "Usuarios",
+    "login": "Iniciar sesión",
+    "logout": "Cerrar sesión",
+    "menu": "Menú",
+    "notifications": "Notificaciones"
+  },
+  "auth": {
+    "signIn": "Iniciar Sesión",
+    "signOut": "Cerrar Sesión",
+    "signUp": "Registrarse",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "confirmPassword": "Confirmar contraseña",
+    "forgotPassword": "¿Olvidó su contraseña?",
+    "resetPassword": "Restablecer contraseña",
+    "rememberMe": "Recordarme",
+    "sessionExpired": "Su sesión ha expirado. Inicie sesión de nuevo.",
+    "alreadyHaveAccount": "¿Ya tiene una cuenta? Inicie sesión",
+    "dontHaveAccount": "¿No tiene una cuenta? Regístrese"
+  },
+  "feedback": {
+    "savedSuccessfully": "Guardado correctamente.",
+    "deletedSuccessfully": "Eliminado correctamente.",
+    "updatedSuccessfully": "Actualizado correctamente.",
+    "createdSuccessfully": "Creado correctamente.",
+    "confirmDeleteTitle": "¿Está seguro de eliminar esto?",
+    "confirmDeleteMessage": "Esta acción no se puede deshacer.",
+    "noDataFound": "No hay datos disponibles.",
+    "noResultsFound": "No se encontraron resultados para su búsqueda."
+  },
+  "validation": {
+    "required": "Este campo es obligatorio.",
+    "invalidEmail": "Por favor ingrese un correo válido.",
+    "minLength": "Debe tener al menos {min} caracteres.",
+    "maxLength": "Debe tener como máximo {max} caracteres.",
+    "invalidNumber": "Por favor ingrese un número válido.",
+    "passwordsDoNotMatch": "Las contraseñas no coinciden.",
+    "invalidUrl": "Por favor ingrese una URL válida."
+  },
+  "errors": {
+    "badRequest": "La solicitud es inválida. Verifique los datos ingresados.",
+    "unauthorized": "Se requiere autenticación para acceder a este recurso.",
+    "forbidden": "No tiene permiso para realizar esta acción.",
+    "notFound": "No se encontró el recurso solicitado.",
+    "conflict": "Ocurrió un conflicto con los datos. Por favor verifique.",
+    "rateLimited": "Demasiadas solicitudes. Espere un momento e intente de nuevo.",
+    "upstreamError": "Un servicio remoto no respondió. Intente más tarde.",
+    "internalServerError": "Ocurrió un error inesperado en el servidor.",
+    "networkError": "Error de conexión de red. Verifique su internet.",
+    "unknownError": "Ocurrió un error desconocido."
+  },
+  "pagination": {
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "pageOf": "Página {page} de {totalPages}",
+    "showingResults": "Mostrando {start} a {end} de {total} resultados"
+  }
+}
+

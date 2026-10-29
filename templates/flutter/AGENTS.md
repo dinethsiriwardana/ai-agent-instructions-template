@@ -59,12 +59,14 @@ Deviations from this table must be recorded in `docs/DECISIONS.md` before implem
 8. **Const and small**: prefer `const` constructors; split large `build` methods into widget classes, not helper methods.
 9. **DRY with judgment**: search `core/` and `shared/` before writing anything. Extract on the **second** use.
 10. **Portable by design**: platform and vendor SDKs (Firebase, maps, payments) are wrapped behind interfaces in `data/` or `core/services/`.
+11. **Centralized text & error dictionary**: never hardcode strings, words, or error messages in widgets, BLoCs, or failure mappers. All UI copy, button labels, and error messages are centralized in `lib/l10n/app_en.arb` (and `app_es.arb` for translations) via `l10n.yaml`. To update any word, error message, or switch languages, developers update this single place.
 
 ---
 
 ## 3. Folder Structure
 
 ```
+l10n.yaml                             # Flutter localization config (template ARB & output setup)
 lib/
 ├── main.dart                         # Entry: bootstrap() then runApp
 ├── bootstrap.dart                    # Init: env, DI, error handlers (FlutterError, PlatformDispatcher), bloc observer
@@ -102,7 +104,9 @@ lib/
 │       │   └── widgets/              # feature-specific widgets
 │       └── products_injection.dart   # registers this feature in get_it
 │
-└── l10n/                             # app_en.arb, app_xx.arb
+└── l10n/                             # Single source of truth for ALL words, UI text & error messages
+    ├── app_en.arb                    # Default language dictionary (common words, nav, auth, errors)
+    └── app_es.arb                    # Secondary language translation
 
 test/                                 # mirrors lib/ structure
 integration_test/                     # critical end-to-end flows
