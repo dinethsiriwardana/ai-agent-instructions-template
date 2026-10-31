@@ -13,6 +13,7 @@
 | Document | Answers |
 |---|---|
 | `AGENTS.md` (this file) | How code is structured and written |
+| `BRANCHES.md` | Active, in-review, and merged branch registry |
 | `docs/UI_RULES.md` | How things look (theme tokens, widgets, responsive and accessibility rules) |
 | `docs/PROJECT_GUIDELINES.md` | How work flows (branches, PRs, commits, releases, maintenance) |
 | `docs/PROJECT_PLAN.md` | What is being built and why |
@@ -345,7 +346,7 @@ Values come from `--dart-define-from-file=env/<flavor>.json` (git-ignored; `env/
 
 ## 13. Workflow for the AI Code Writer
 
-0. **Align with style**: read `docs/ai/STYLE_AND_SKILLS.md` to adapt to developer preferences and avoid disliked patterns.
+0. **Branch first & align with style**: check `BRANCHES.md` and git for an existing branch (`node scripts/git-flow.mjs start feat/<name> "Description"`). All work branches off and targets `dev-test`. Never work directly on `main` or `dev`. Read `docs/ai/STYLE_AND_SKILLS.md` to adapt to developer preferences.
 1. **Locate**: identify the owning feature. If none exists, create `features/<name>/` with `data/`, `domain/`, `presentation/` and an injection file.
 2. **Search for reuse**: check `core/` and `shared/` for existing widgets, helpers, failures, use case bases.
 3. **Domain first**: entity -> repository interface -> use case (pure Dart).

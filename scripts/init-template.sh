@@ -271,7 +271,7 @@ for file in "${COPIED_FILES[@]}"; do
 done
 
 TODAY="$(date +%Y-%m-%d)"
-for doc in "$TARGET/docs/PROJECT_PLAN.md" "$TARGET/docs/DECISIONS.md"; do
+for doc in "$TARGET/docs/PROJECT_PLAN.md" "$TARGET/docs/DECISIONS.md" "$TARGET/BRANCHES.md"; do
   [[ -f "$doc" ]] && perl -pi -e "s/YYYY-MM-DD/$TODAY/g" "$doc"
 done
 

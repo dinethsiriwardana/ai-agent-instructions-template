@@ -13,6 +13,7 @@
 | Document | Answers |
 |---|---|
 | `AGENTS.md` (this file) | How code is structured and written |
+| `BRANCHES.md` | Active, in-review, and merged branch registry |
 | `docs/UI_RULES.md` | How things look (tokens, components, mobile rules) |
 | `docs/PROJECT_GUIDELINES.md` | How work flows (branches, PRs, commits, releases, maintenance) |
 | `docs/PROJECT_PLAN.md` | What is being built and why |
@@ -388,7 +389,8 @@ export const createTaskAction = createAction({
 import { z } from "zod";
 
 const server = z.object({
-  NODE_ENV: z.enum(["development", "test", "production"]),
+  APP_ENV: z.enum(["development", "preview", "test", "production"]).default("development"),
+  NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
   DATABASE_URL: z.string().url(),
   AUTH_SECRET: z.string().min(32),
 });
@@ -396,16 +398,24 @@ const client = z.object({
   NEXT_PUBLIC_APP_URL: z.string().url(),
 });
 
-export const env = { ...server.parse(process.env), ...client.parse({
-  NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
-}) };
+// In Production (VERCEL_ENV === "production"), strictly use DATABASE_URL.
+// In Preview (dev QA) and Development (dev-test local), use Preview-scoped DATABASE_URL or Dev_DATABASE_URL fallback.
+const isProd = process.env.VERCEL_ENV === "production" || (!process.env.VERCEL_ENV && process.env.APP_ENV === "production");
+const resolvedDbUrl = isProd
+  ? process.env.DATABASE_URL
+  : process.env.Dev_DATABASE_URL || process.env.DATABASE_URL;
+
+export const env = {
+  ...server.parse({ ...process.env, DATABASE_URL: resolvedDbUrl }),
+  ...client.parse({ NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL }),
+};
 ```
 
-Only `env.ts` reads `process.env`. Keep `.env.example` in sync with every variable added.
+Only `env.ts` reads `process.env`. Keep `.env.example` in sync with every variable added. Use `.env.development` locally on `dev-test` so local development never touches the production database.
 
 ---
 
-## 7. Database Rules
+## 7. Database & Safe Migration Rules
 
 - Only `*.repository.ts` imports from `server/db`.
 - Repositories return plain typed objects. No business rules in them.
@@ -413,7 +423,11 @@ Only `env.ts` reads `process.env`. Keep `.env.example` in sync with every variab
 - Always paginate list queries (default limit 20, max 100). Never return unbounded lists.
 - Select only needed columns for list endpoints.
 - Index foreign keys and frequently filtered columns.
-- Schema changes via migrations only. Never edit the database manually. Use `drizzle-kit generate` + `migrate` for shared environments; `push` is for local prototyping only.
+- **Data-Safe Versioned Migrations**:
+  - Schema changes via additive, idempotent migrations only (`CREATE TABLE IF NOT EXISTS`, `ALTER TABLE ... ADD COLUMN IF NOT EXISTS`). Never edit the database manually.
+  - Track applied migrations in `__schema_migrations` with SHA-256 checksums and block destructive SQL (`DROP TABLE`, `DROP COLUMN`, `TRUNCATE`).
+  - **Local & QA (`dev-test` / `dev`)**: Run `npm run db:migrate:dev` locally or automatically on push to `dev`.
+  - **Production (`main`)**: `npm run db:migrate:prod` runs **only when merging to `main`** (CI / Vercel Production build) and is strictly blocked from running locally.
 - Money as integer minor units (or `numeric`), never floats. Timestamps in UTC.
 - Every user-owned table has an owner column (`user_id` or `tenant_id`) and every query filters by it.
 - Use standard PostgreSQL features where practical to keep hosting portable.
@@ -495,15 +509,15 @@ Only `env.ts` reads `process.env`. Keep `.env.example` in sync with every variab
 
 When asked to build or change something, follow this order:
 
-0. **Align with style**: read `docs/ai/STYLE_AND_SKILLS.md` to adapt to developer preferences and avoid disliked patterns.
+0. **Branch first & align with style**: check `BRANCHES.md` and git for an existing branch (`npm run branch:start -- feat/<name> "Description"`). All work branches off and targets `dev-test`. Never work directly on `main` or `dev`. Read `docs/ai/STYLE_AND_SKILLS.md` to adapt to developer preferences.
 1. **Locate**: identify the owning feature. If none exists, create `features/<name>/` with the standard layout.
 2. **Search for reuse**: check `shared/` and the feature for existing components, hooks, helpers, schemas. Reuse or extend; do not duplicate.
-3. **Schema first**: Zod schema (and DB table + migration if needed).
+3. **Schema first**: Zod schema (and DB table + additive migration if needed).
 4. **Bottom-up**: repository -> service -> route (`createHandler`) -> `api.ts` -> hook -> component -> page.
 5. **Extract** anything now used twice into `shared/` (and update the earlier usage).
 6. **Test**: write tests for every new or changed unit (section 12).
 7. **Verify**: run `pnpm typecheck && pnpm lint && pnpm test && pnpm build` until green. Check size limits (section 4), import boundaries and the security checklist.
-8. **Document**: tick the matching item in `docs/TASK_LIST.md`; log any architectural decision in `docs/DECISIONS.md`.
+8. **Document & PR**: tick the matching item in `docs/TASK_LIST.md`; log any architectural decision in `docs/DECISIONS.md`; open PR targeting `dev-test` (`npm run branch:pr -- "feat: summary"`).
 9. **Log request & learn**: record the request under its matching category in `docs/ai/REQUEST_LOG.md`. If the user provided style feedback or corrected a mistake, append the preference to `docs/ai/STYLE_AND_SKILLS.md`.
 
 ### Output rules for the AI
@@ -530,6 +544,8 @@ When asked to build or change something, follow this order:
 - Unbounded queries, floats for money, magic strings for routes or query keys.
 - Separate, multiple or per-page CSS files (maintain a single `src/app/globals.css`).
 - Hardcoded colors, radii, shadows or font sizes (see `docs/UI_RULES.md`).
+- Committing or working directly on `main` or `dev` (must use `feat/*`, `fix/*`, `chore/*` branched off and targeting `dev-test`).
+- Running production database migrations locally or writing destructive SQL (`DROP TABLE`, `DROP COLUMN`, `TRUNCATE`).
 - Emojis in UI text, comments or commit messages.
 
 ---
@@ -544,11 +560,38 @@ When asked to build or change something, follow this order:
 - Mobile verified (320px and up) per `docs/UI_RULES.md`
 - Tests written for all new or changed logic and **actually run green** (typecheck, lint, test, build)
 - No file or function exceeds the size limits
+- Code committed on a dedicated branch (`feat/*`, `fix/*`, `chore/*`) branched off `dev-test` and tracked in `BRANCHES.md`
+- PR opened targeting `dev-test` and approved by user before merge (`npm run branch:finish`)
 - `docs/TASK_LIST.md` updated; `.env.example` updated if env changed
 
 ---
 
-## 16. Related Documents
+## 16. Git & Branching Strategy (`dev-test` -> `dev` -> `main`)
+
+> **MANDATORY**: Direct work or commits on `main` or `dev` are strictly forbidden. All feature, fix, chore, and refactor branches originate from and target `dev-test`. Always use `npm run branch:*` commands to maintain `BRANCHES.md`.
+
+| Branch | Role | Environment & DB Scope |
+|---|---|---|
+| `main` | Production / stable releases | Vercel `Production` (`DATABASE_URL` Prod only). Auto-runs `db:migrate:prod` on merge. |
+| `dev` | QA / Staging releases | Vercel `Preview` (`DATABASE_URL` Preview/Dev only, or `Dev_*`). Auto-runs `db:migrate:dev`. |
+| `dev-test` | Local integration & testing | Local `.env.development` (Dev DB). Primary target for all feature/fix PRs. |
+| `feat/*`, `fix/*`, `chore/*` | Working branches | Branched off `dev-test`, target `dev-test`, tracked in `BRANCHES.md`. |
+
+### Quick Reference Commands
+```bash
+# 1. Start or resume work (syncs dev-test & updates BRANCHES.md):
+npm run branch:start -- feat/your-feature-name "Short description"
+
+# 2. Run verification, push, and open PR to dev-test:
+npm run branch:pr -- "feat: your PR title"
+
+# 3. After user testing & approval, mark Merged and return to dev-test:
+npm run branch:finish
+```
+
+---
+
+## 17. Related Documents
 
 - Visual and component work: [docs/UI_RULES.md](./docs/UI_RULES.md)
 - Branching, PRs, commits, releases and maintenance: [docs/PROJECT_GUIDELINES.md](./docs/PROJECT_GUIDELINES.md)

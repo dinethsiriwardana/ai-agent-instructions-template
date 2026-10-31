@@ -13,6 +13,7 @@
 | Document | Answers |
 |---|---|
 | `AGENTS.md` (this file) | How code is structured and written |
+| `BRANCHES.md` | Active, in-review, and merged branch registry |
 | `docs/API_RULES.md` | How the HTTP API looks (URLs, envelopes, pagination, versioning, errors) |
 | `docs/PROJECT_GUIDELINES.md` | How work flows (branches, PRs, commits, releases, maintenance) |
 | `docs/PROJECT_PLAN.md` | What is being built and why |
@@ -360,15 +361,15 @@ Wire it as `ConfigModule.forRoot({ validate: validateEnv, isGlobal: true })`. Re
 
 ## 13. Workflow for the AI Code Writer
 
-0. **Align with style**: read `docs/ai/STYLE_AND_SKILLS.md` to adapt to developer preferences and avoid disliked patterns.
+0. **Branch first & align with style**: check `BRANCHES.md` and git for an existing branch (`npm run branch:start -- feat/<name> "Description"`). All work branches off and targets `dev-test`. Never work directly on `main` or `dev`. Read `docs/ai/STYLE_AND_SKILLS.md` to adapt to developer preferences.
 1. **Locate**: identify the owning module. If none exists, create `modules/<name>/` with the standard layout and register it in `app.module.ts`.
 2. **Search for reuse**: check `common/` and the module for existing helpers, schemas, guards, base classes.
-3. **Schema first**: Zod schema and DTO (and DB table + migration if needed).
+3. **Schema first**: Zod schema and DTO (and DB table + additive migration if needed).
 4. **Bottom-up**: repository -> service -> controller -> module wiring -> OpenAPI decorators.
 5. **Extract** anything now used twice into `common/` (and update the earlier usage).
 6. **Test**: write tests for every new or changed unit (section 12).
 7. **Verify**: run the quality gate until green. Check size limits, import boundaries and the security checklist.
-8. **Document**: tick the matching item in `docs/TASK_LIST.md`; log any architectural decision in `docs/DECISIONS.md`; update `docs/API_RULES.md` if a convention changed.
+8. **Document & PR**: tick the matching item in `docs/TASK_LIST.md`; log any architectural decision in `docs/DECISIONS.md`; open PR targeting `dev-test` (`npm run branch:pr -- "feat: summary"`).
 9. **Log request & learn**: record the request under its matching category in `docs/ai/REQUEST_LOG.md`. If the user provided style feedback or corrected a mistake, append the preference to `docs/ai/STYLE_AND_SKILLS.md`.
 
 ### Output rules for the AI
