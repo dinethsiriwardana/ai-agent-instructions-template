@@ -15,6 +15,7 @@
 | `AGENTS.md` (this file) | How code is structured and written |
 | `BRANCHES.md` | Active, in-review, and merged branch registry |
 | `docs/API_RULES.md` | How the HTTP API looks (URLs, envelopes, pagination, versioning, errors) |
+| `docs/SUPABASE_RULES.md` | Supabase Auth, RLS, Storage, Edge Functions, Realtime & CLI workflow |
 | `docs/PROJECT_GUIDELINES.md` | How work flows (branches, PRs, commits, releases, maintenance) |
 | `docs/PROJECT_PLAN.md` | What is being built and why |
 | `docs/TASK_LIST.md` | What is done and what is next |
@@ -34,7 +35,7 @@ Reading order: `docs/ai/STYLE_AND_SKILLS.md` -> `PROJECT_PLAN` -> `AGENTS` -> `A
 | Framework | NestJS (latest LTS-compatible), TypeScript `strict`, Node LTS |
 | Package manager | pnpm |
 | Validation | Zod via `nestjs-zod` (single source of truth for DTOs and types) |
-| Database | PostgreSQL via Drizzle ORM (swap only the `database/` layer and repositories for another ORM) |
+| Database & BaaS | PostgreSQL via Drizzle ORM + Supabase (`@supabase/supabase-js`; see `docs/SUPABASE_RULES.md`) |
 | Config | `@nestjs/config` with a Zod-validated schema in `src/config/env.ts` |
 | Auth | Passport or custom guards behind an `AuthModule` (decision in `docs/DECISIONS.md`) |
 | API docs | `@nestjs/swagger` (OpenAPI), generated from Zod DTOs |
@@ -284,6 +285,21 @@ Wire it as `ConfigModule.forRoot({ validate: validateEnv, isGlobal: true })`. Re
 - Money as integer minor units (or `numeric`), never floats. Timestamps in UTC.
 - Every user-owned table has an owner column (`user_id` or `tenant_id`) and every query filters by it.
 
+### 7.1 Supabase Integration Rules (NestJS Backend)
+
+> Full Supabase standards (RLS policies, Storage, Edge Functions, Realtime, CLI) live in [docs/SUPABASE_RULES.md](./docs/SUPABASE_RULES.md).
+
+1. **JWT Verification via JWKS (`AuthModule`)**:
+   - Validate incoming `Authorization: Bearer <access_token>` headers issued by Supabase Auth in `JwtAuthGuard` using Supabase's JWKS endpoint (`${SUPABASE_URL}/auth/v1/.well-known/jwks.json`) or `SUPABASE_JWT_SECRET`.
+   - Extract `sub` (`user.id`), `email`, and server-controlled `app_metadata` roles into `@CurrentUser()`. Never trust `user_metadata` for roles or permissions.
+2. **Scoped vs Service-Role Clients (`integrations/supabase/`)**:
+   - Wrap `@supabase/supabase-js` in an injectable `SupabaseService` inside `src/integrations/supabase/`.
+   - Provide `getClientForUser(accessToken)` (uses `SUPABASE_ANON_KEY` + user JWT so RLS is enforced) for user-scoped Storage/RPC operations, and `getAdminClient()` (uses `SUPABASE_SERVICE_ROLE_KEY`, `persistSession: false`) strictly for background jobs (`jobs/`), webhook handlers, or admin provisioning.
+3. **Supavisor Connection Pooler**:
+   - Connect Drizzle (`postgres-js`) via the Supavisor transaction pooler (`DATABASE_URL` on port `6543` with `{ prepare: false }`) for runtime queries, and use `DIRECT_URL` (port `5432`) for `drizzle-kit` migrations.
+4. **Row Level Security (RLS) Always Enabled**:
+   - Enable RLS on every table in `public` even when NestJS queries PostgreSQL via Drizzle, ensuring the Supabase Data API never exposes unprotected tables.
+
 ---
 
 ## 8. External Services Rules
@@ -414,6 +430,7 @@ Wire it as `ConfigModule.forRoot({ validate: validateEnv, isGlobal: true })`. Re
 ## 16. Related Documents
 
 - API conventions: [docs/API_RULES.md](./docs/API_RULES.md)
+- Supabase Auth, RLS, Storage, Edge Functions & CLI rules: [docs/SUPABASE_RULES.md](./docs/SUPABASE_RULES.md)
 - Branching, PRs, commits, releases and maintenance: [docs/PROJECT_GUIDELINES.md](./docs/PROJECT_GUIDELINES.md)
 - Product scope and architecture overview: [docs/PROJECT_PLAN.md](./docs/PROJECT_PLAN.md)
 

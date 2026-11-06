@@ -21,6 +21,7 @@ It contains **architecture rules, documentation templates, and CI configs** only
   - `BRANCHES.md`: Central branch registry tracking `Active`, `In Review`, `Merged`, and `Closed` branches targeting `dev-test`.
   - `scripts/git-flow.mjs` & `scripts/git-flow-lib.mjs`: Automated branch lifecycle CLI (`branch:start`, `branch:sync`, `branch:pr`, `branch:finish`, `branch:list`).
   - `docs/PROJECT_GUIDELINES.md`: 3-tier branching (`dev-test` -> `dev` -> `main`), environment variable scoping, data-safe DB migration rules, PR conventions, 10-minute blocker protocol.
+  - `docs/SUPABASE_RULES.md`: Comprehensive Supabase rules (PostgreSQL schema, RLS performance & policies, Auth/SSR/JWKS, Storage buckets & policies, Edge Functions, Realtime, and Local CLI workflow).
   - `docs/ISSUES.md`: Blocker tracking log.
   - `docs/ai/STYLE_AND_SKILLS.md`: Developer skills, habits, code style rules, and learned preferences.
   - `docs/ai/REQUEST_LOG.md`: User requests grouped by category (Feature, Bugfix, Refactor, Architecture, DevOps).

@@ -147,6 +147,7 @@ Reviewers confirm each item before approving:
 - [ ] Inputs validated; auth and ownership checks present (security checklist in `AGENTS.md`)
 - [ ] Tests added or updated and meaningful (happy path, failure, edge case)
 - [ ] UI or API rules followed (`docs/UI_RULES.md` or `docs/API_RULES.md`)
+- [ ] Supabase RLS, Auth, Storage, and migration rules followed (`docs/SUPABASE_RULES.md`)
 - [ ] Loading, empty and error states present (UI changes)
 - [ ] No file or function over the size limits
 - [ ] No secrets, debug print leftovers or commented-out code
@@ -211,6 +212,7 @@ Reviewers confirm each item before approving:
 | Technical or architectural choice | New entry in `docs/DECISIONS.md` |
 | New UI component or token (UI stacks) | Spec in `docs/UI_RULES.md` |
 | New endpoint convention (API stack) | `docs/API_RULES.md` |
+| Supabase table, RLS policy, bucket, or Edge Function | `docs/SUPABASE_RULES.md`, `supabase/migrations/`, and regenerated types |
 | New environment variable | `.env.example` and `src/config/env.ts` |
 | Parked blocker | `docs/ISSUES.md` or a GitHub issue |
 | User request completed (AI session) | Grouped entry in `docs/ai/REQUEST_LOG.md` & `AI Agent History.md` |
