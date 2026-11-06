@@ -15,7 +15,6 @@
 | `AGENTS.md` (this file) | How code is structured and written |
 | `BRANCHES.md` | Active, in-review, and merged branch registry |
 | `docs/UI_RULES.md` | How things look (theme tokens, widgets, responsive and accessibility rules) |
-| `docs/SUPABASE_RULES.md` | Supabase Auth, RLS, Storage, Edge Functions, Realtime & CLI workflow |
 | `docs/PROJECT_GUIDELINES.md` | How work flows (branches, PRs, commits, releases, maintenance) |
 | `docs/PROJECT_PLAN.md` | What is being built and why |
 | `docs/TASK_LIST.md` | What is done and what is next |
@@ -36,7 +35,7 @@ Reading order: `docs/ai/STYLE_AND_SKILLS.md` -> `PROJECT_PLAN` -> `AGENTS` -> `U
 | Architecture | Clean Architecture, feature-first (presentation / domain / data) |
 | State management | BLoC (`flutter_bloc`); Cubit for simple state, Bloc for event-driven flows |
 | Navigation | `go_router` (declarative, typed route constants, redirect-based auth guard) |
-| Networking & BaaS | `dio` with interceptors + `supabase_flutter` wrapped behind datasources (see `docs/SUPABASE_RULES.md`) |
+| Networking | `dio` with interceptors (auth, logging, retry, error mapping) |
 | Dependency injection | `get_it` (+ `injectable` optional) wired in `core/di/` |
 | Models | `freezed` + `json_serializable` for immutable models and unions |
 | Equality | `equatable` for entities and states when not using `freezed` |
@@ -281,25 +280,6 @@ Values come from `--dart-define-from-file=env/<flavor>.json` (git-ignored; `env/
 - Paginate every list endpoint (cursor or page). Never fetch unbounded lists.
 - Cache with a clear policy (source of truth, TTL, invalidation) documented in the repository.
 
-### 8.1 Supabase Integration Rules (Flutter Clean Architecture)
-
-> Full Supabase standards (RLS policies, Storage, Edge Functions, Realtime, CLI) live in [docs/SUPABASE_RULES.md](./docs/SUPABASE_RULES.md).
-
-1. **Initialization & Secure Key Scoping (`bootstrap.dart` & `env.dart`)**:
-   - Initialize `await Supabase.initialize(url: Env.supabaseUrl, anonKey: Env.supabaseAnonKey)` inside `bootstrap.dart` using `--dart-define-from-file=env/<flavor>.json`.
-   - **Never** embed `SUPABASE_SERVICE_ROLE_KEY` or database connection strings inside the Flutter app or `env/*.json`.
-2. **Strict Clean Architecture Boundaries for `SupabaseClient`**:
-   - Register `Supabase.instance.client` in `get_it` (`core/di/injection.dart`) and inject it **only** into `*_remote_datasource.dart` or `core/services/`.
-   - `domain/` and `presentation/` (widgets, pages, BLoCs/Cubits) must **never** import `package:supabase_flutter/supabase_flutter.dart`.
-3. **Centralized Exception Mapping (`error_mapper.dart`)**:
-   - Catch `AuthException`, `PostgrestException`, `StorageException`, and `FunctionException` inside repository implementations and map them via `core/error/error_mapper.dart` to typed `Failure` subclasses (`UnauthorizedFailure`, `ValidationFailure`, `NotFoundFailure`, `ServerFailure`) with localized messages from `lib/l10n/`.
-4. **Auth Stream & Deep Links (PKCE)**:
-   - Listen to `supabase.auth.onAuthStateChange` inside `AuthRemoteDataSource` and expose a clean `Stream<AuthSessionEntity>` to `AuthBloc` and `go_router`'s `refreshListenable`.
-   - Use PKCE auth flow (`AuthFlowType.pkce`) for OAuth, magic links, and password recovery deep links.
-5. **Realtime & Storage Cleanup**:
-   - Expose Supabase Realtime channels (`Broadcast` / `PostgresChangeEvent`) as Dart `Stream`s from the remote datasource, consumed in the BLoC via `emit.forEach`, and always call `supabase.removeChannel(channel)` when the stream cancels or the BLoC closes.
-   - Upload files to private buckets under `${userId}/${folder}/${uuid}.${ext}` and enforce MIME type and size checks before uploading.
-
 ---
 
 ## 9. External Services and Platform Rules
@@ -424,7 +404,6 @@ Values come from `--dart-define-from-file=env/<flavor>.json` (git-ignored; `env/
 ## 16. Related Documents
 
 - Visual and widget work: [docs/UI_RULES.md](./docs/UI_RULES.md)
-- Supabase Auth, RLS, Storage, Edge Functions & CLI rules: [docs/SUPABASE_RULES.md](./docs/SUPABASE_RULES.md)
 - Branching, PRs, commits, releases and maintenance: [docs/PROJECT_GUIDELINES.md](./docs/PROJECT_GUIDELINES.md)
 - Product scope and architecture overview: [docs/PROJECT_PLAN.md](./docs/PROJECT_PLAN.md)
 

@@ -6,7 +6,7 @@
 **A production-grade, rules-first template repository designed to bootstrap architecture guidelines, centralized localization, engineering workflows, CI quality gates, and AI pair programming memory.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
-[![Template Version](https://img.shields.io/badge/version-2.7.0-blue.svg)](./README.md)
+[![Template Version](https://img.shields.io/badge/version-2.6.0-blue.svg)](./README.md)
 [![Next.js](https://img.shields.io/badge/Next.js-15-black?logo=next.js)](templates/nextjs/)
 [![NestJS](https://img.shields.io/badge/NestJS-11-E0234E?logo=nestjs)](templates/nestjs/)
 [![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter)](templates/flutter/)
@@ -142,7 +142,6 @@ bash scripts/init-template.sh \
 │   │   └── git-flow-lib.mjs            # Pure helper library for BRANCHES.md & PR URLs
 │   ├── docs/
 │   │   ├── PROJECT_GUIDELINES.md       # 3-stage branching (dev-test -> dev -> main), env scoping, safe DB migrations
-│   │   ├── SUPABASE_RULES.md           # Full-spectrum Supabase rules (Schema, RLS, Auth/SSR, Storage, Edge Functions, Realtime, CLI)
 │   │   ├── ISSUES.md                   # Parked blocker tracker for deep technical roadblocks
 │   │   └── ai/                         # Continuous AI learning & personal profile system
 │   │       ├── STYLE_AND_SKILLS.md     # Developer habits, skills, preferences & learned corrections
@@ -321,11 +320,10 @@ This project is open-source software licensed under the **[MIT License](./LICENS
 
 ## 📜 Version History
 
-**TEMPLATE_VERSION: 2.7.0**
+**TEMPLATE_VERSION: 2.6.0**
 
 | Version | Description |
 |---|---|
-| **2.7.0** | Added comprehensive Supabase rules (`core/docs/SUPABASE_RULES.md`) covering Database Schema, High-Performance RLS (`(select auth.uid())`, `security_invoker` views, `SECURITY DEFINER` helpers), Auth (`@supabase/ssr`, JWKS, `app_metadata` RBAC), Storage buckets & policies, Edge Functions, Realtime Broadcast, Local CLI & pgTAP testing, plus stack-specific Supabase integration rules in Next.js, NestJS, and Flutter `AGENTS.md`. |
 | **2.6.0** | Added 3-stage branching strategy (`dev-test` local -> `dev` QA -> `main` Prod), `core/BRANCHES.md` central branch registry, `core/scripts/git-flow.mjs` CLI automation (`branch:start`, `branch:sync`, `branch:pr`, `branch:finish`, `branch:list`), environment variable scoping (`Production Only` vs `Preview / Development Only` with `Dev_*` fallback), and versioned data-safe DB migration rules (merge-only prod migrations). |
 | **2.5.0** | Polished repository presentation: added MIT License (`LICENSE`), hero banner, modern shields badges, architectural comparison matrix, and quick navigation. |
 | **2.4.0** | Enhanced `scripts/init-template.sh` and `templates/<stack>/stack.conf` to support remote GitHub one-liner execution (`curl`), existing-project stack auto-detection (`flutter create myapp && cd myapp`), and automatic package/dependency installation (`setup_stack`). |
