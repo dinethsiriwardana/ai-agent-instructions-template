@@ -1,0 +1,88 @@
+{
+  "common": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "create": "Crear",
+    "add": "Agregar",
+    "update": "Actualizar",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "clear": "Limpiar",
+    "confirm": "Confirmar",
+    "back": "Volver",
+    "next": "Siguiente",
+    "submit": "Enviar",
+    "loading": "Cargando...",
+    "view": "Ver",
+    "close": "Cerrar",
+    "refresh": "Actualizar",
+    "actions": "Acciones",
+    "status": "Estado",
+    "name": "Nombre",
+    "details": "Detalles",
+    "yes": "Sí",
+    "no": "No",
+    "all": "Todos",
+    "none": "Ninguno",
+    "optional": "Opcional",
+    "required": "Requerido"
+  },
+  "auth": {
+    "signIn": "Iniciar Sesión",
+    "signOut": "Cerrar Sesión",
+    "signUp": "Registrarse",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "confirmPassword": "Confirmar contraseña",
+    "forgotPassword": "¿Olvidó su contraseña?",
+    "resetPassword": "Restablecer contraseña",
+    "sessionExpired": "Su sesión ha expirado. Inicie sesión de nuevo.",
+    "invalidToken": "Token de autenticación inválido o expirado.",
+    "mfaRequired": "Se requiere autenticación multifactor para esta acción."
+  },
+  "storage": {
+    "uploadSuccess": "Archivo subido correctamente.",
+    "deleteSuccess": "Archivo eliminado correctamente.",
+    "fileTooLarge": "El archivo supera el tamaño máximo permitido.",
+    "invalidFileType": "Este tipo de archivo no está permitido.",
+    "bucketNotFound": "No se encontró el contenedor de almacenamiento solicitado.",
+    "uploadFailed": "No se pudo subir el archivo. Intente de nuevo."
+  },
+  "feedback": {
+    "savedSuccessfully": "Guardado correctamente.",
+    "deletedSuccessfully": "Eliminado correctamente.",
+    "updatedSuccessfully": "Actualizado correctamente.",
+    "createdSuccessfully": "Creado correctamente.",
+    "noDataFound": "No se encontraron registros.",
+    "noResultsFound": "Ningún resultado coincide con los filtros."
+  },
+  "validation": {
+    "required": "Este campo es obligatorio.",
+    "invalidEmail": "Por favor ingrese un correo válido.",
+    "invalidUuid": "Por favor proporcione un identificador UUID válido.",
+    "minLength": "Debe tener al menos {min} caracteres.",
+    "maxLength": "Debe tener como máximo {max} caracteres.",
+    "invalidNumber": "Por favor ingrese un número válido.",
+    "invalidUrl": "Por favor ingrese una URL válida."
+  },
+  "errors": {
+    "badRequest": "Los datos o parámetros de la solicitud son inválidos.",
+    "unauthorized": "Se requiere autenticación para acceder a este recurso.",
+    "forbidden": "Las políticas RLS o los permisos de rol denegaron esta acción.",
+    "notFound": "No se encontró el registro solicitado.",
+    "conflict": "Ya existe un registro con estos valores únicos.",
+    "rateLimited": "Demasiadas solicitudes. Espere un momento e intente de nuevo.",
+    "upstreamError": "Un servicio externo o webhook no respondió.",
+    "internalServerError": "Ocurrió un error inesperado en la base de datos o servidor.",
+    "unknownError": "Ocurrió un error desconocido."
+  },
+  "pagination": {
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "pageOf": "Página {page} de {totalPages}",
+    "showingResults": "Mostrando {start} a {end} de {total} resultados"
+  }
+}
+

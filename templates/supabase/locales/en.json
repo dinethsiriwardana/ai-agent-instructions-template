@@ -1,0 +1,88 @@
+{
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "add": "Add",
+    "update": "Update",
+    "search": "Search",
+    "filter": "Filter",
+    "clear": "Clear",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit",
+    "loading": "Loading...",
+    "view": "View",
+    "close": "Close",
+    "refresh": "Refresh",
+    "actions": "Actions",
+    "status": "Status",
+    "name": "Name",
+    "details": "Details",
+    "yes": "Yes",
+    "no": "No",
+    "all": "All",
+    "none": "None",
+    "optional": "Optional",
+    "required": "Required"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "signUp": "Sign Up",
+    "email": "Email address",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "forgotPassword": "Forgot password?",
+    "resetPassword": "Reset password",
+    "sessionExpired": "Your session has expired. Please sign in again.",
+    "invalidToken": "Invalid or expired authentication token.",
+    "mfaRequired": "Multi-factor authentication is required for this action."
+  },
+  "storage": {
+    "uploadSuccess": "File uploaded successfully.",
+    "deleteSuccess": "File deleted successfully.",
+    "fileTooLarge": "The file exceeds the maximum allowed size.",
+    "invalidFileType": "This file type is not supported.",
+    "bucketNotFound": "The requested storage bucket was not found.",
+    "uploadFailed": "Failed to upload file. Please try again."
+  },
+  "feedback": {
+    "savedSuccessfully": "Saved successfully.",
+    "deletedSuccessfully": "Deleted successfully.",
+    "updatedSuccessfully": "Updated successfully.",
+    "createdSuccessfully": "Created successfully.",
+    "noDataFound": "No records found.",
+    "noResultsFound": "No results match your filter criteria."
+  },
+  "validation": {
+    "required": "This field is required.",
+    "invalidEmail": "Please enter a valid email address.",
+    "invalidUuid": "Please provide a valid UUID identifier.",
+    "minLength": "Must be at least {min} characters.",
+    "maxLength": "Must be at most {max} characters.",
+    "invalidNumber": "Please enter a valid number.",
+    "invalidUrl": "Please enter a valid URL."
+  },
+  "errors": {
+    "badRequest": "The request payload or parameters are invalid.",
+    "unauthorized": "Authentication is required to access this resource.",
+    "forbidden": "Row Level Security or role permissions denied this action.",
+    "notFound": "The requested record could not be found.",
+    "conflict": "A record with these unique values already exists.",
+    "rateLimited": "Too many requests. Please wait a moment and try again.",
+    "upstreamError": "An upstream service or webhook failed to respond.",
+    "internalServerError": "An unexpected database or server error occurred.",
+    "unknownError": "An unexpected error occurred."
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "pageOf": "Page {page} of {totalPages}",
+    "showingResults": "Showing {start} to {end} of {total} results"
+  }
+}
+

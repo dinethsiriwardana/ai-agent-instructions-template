@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Sets up AI agent instructions, architecture rules, localization dictionaries,
-# and stack dependencies for a new or existing Next.js, NestJS, or Flutter project.
+# and stack dependencies for a new or existing Next.js, NestJS, Flutter, or Supabase project.
 #
 # Usage:
 #   # 1. Inside an existing app (e.g. after `flutter create myapp && cd myapp`):
@@ -10,10 +10,10 @@
 #   bash scripts/init-template.sh
 #
 #   # 3. Headless / CLI mode:
-#   bash scripts/init-template.sh --stack flutter --target ./myapp \
-#        --name "My App" --description "Mobile client" --owner "Jane Doe" [--install | --no-install]
+#   bash scripts/init-template.sh --stack supabase --target ./myapp \
+#        --name "My App" --description "Supabase backend" --owner "Jane Doe" [--install | --no-install]
 #
-# Stacks: nextjs | nestjs | flutter  (see templates/<stack>/)
+# Stacks: nextjs | nestjs | flutter | supabase  (see templates/<stack>/)
 
 set -euo pipefail
 
@@ -21,7 +21,7 @@ TEMPLATE_REPO_URL="${TEMPLATE_REPO_URL:-https://github.com/dinethsiriwardana/ai-
 TEMPLATE_ARCHIVE_URL="${TEMPLATE_ARCHIVE_URL:-https://github.com/dinethsiriwardana/ai-agent-instructions-template/archive/refs/heads}"
 TEMPLATE_REPO_BRANCH="${TEMPLATE_REPO_BRANCH:-main}"
 
-STACKS=(nextjs nestjs flutter)
+STACKS=(nextjs nestjs flutter supabase)
 
 STACK=""
 TARGET=""
@@ -137,12 +137,17 @@ if [[ -f "$TARGET/pubspec.yaml" ]]; then
   DETECTED_STACK="flutter"
   HAS_EXISTING_PROJECT=1
   DETECTED_NAME="$(awk -F': *' '/^name:/ {print $2; exit}' "$TARGET/pubspec.yaml" | tr -d "\"'[:space:]")"
+elif [[ -f "$TARGET/supabase/config.toml" ]] && [[ ! -f "$TARGET/next.config.ts" ]] && [[ ! -f "$TARGET/next.config.mjs" ]] && [[ ! -f "$TARGET/nest-cli.json" ]]; then
+  DETECTED_STACK="supabase"
+  HAS_EXISTING_PROJECT=1
 elif [[ -f "$TARGET/package.json" ]]; then
   HAS_EXISTING_PROJECT=1
   if grep -q '"@nestjs/core"' "$TARGET/package.json" 2>/dev/null; then
     DETECTED_STACK="nestjs"
   elif grep -q '"next"' "$TARGET/package.json" 2>/dev/null; then
     DETECTED_STACK="nextjs"
+  elif grep -q '"@supabase/supabase-js"' "$TARGET/package.json" 2>/dev/null; then
+    DETECTED_STACK="supabase"
   fi
   if command -v node >/dev/null 2>&1; then
     DETECTED_NAME="$(node -e 'try { console.log(require(process.argv[1]).name || ""); } catch(e) {}' "$TARGET/package.json")"
@@ -154,7 +159,7 @@ fi
 if [[ -z "$STACK" ]]; then
   if [[ -n "$DETECTED_STACK" ]]; then
     echo "✨ Auto-detected stack in $TARGET: $DETECTED_STACK"
-    STACK="$(prompt_read "Confirm stack (nextjs | nestjs | flutter)" "$DETECTED_STACK")"
+    STACK="$(prompt_read "Confirm stack (nextjs | nestjs | flutter | supabase)" "$DETECTED_STACK")"
   else
     echo "Select a stack:"
     if [[ -t 0 ]]; then

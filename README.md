@@ -1,15 +1,16 @@
 <div align="center">
 
 # ⚡ Multi-Stack AI-Ready Starter Templates
-### Next.js &bull; NestJS &bull; Flutter
+### Next.js &bull; NestJS &bull; Flutter &bull; Supabase
 
 **A production-grade, rules-first template repository designed to bootstrap architecture guidelines, centralized localization, engineering workflows, CI quality gates, and AI pair programming memory.**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
-[![Template Version](https://img.shields.io/badge/version-2.6.0-blue.svg)](./README.md)
+[![Template Version](https://img.shields.io/badge/version-2.7.0-blue.svg)](./README.md)
 [![Next.js](https://img.shields.io/badge/Next.js-15-black?logo=next.js)](templates/nextjs/)
 [![NestJS](https://img.shields.io/badge/NestJS-11-E0234E?logo=nestjs)](templates/nestjs/)
 [![Flutter](https://img.shields.io/badge/Flutter-3.x-02569B?logo=flutter)](templates/flutter/)
+[![Supabase](https://img.shields.io/badge/Supabase-Postgres%20%7C%20RLS%20%7C%20Edge-3ECF8E?logo=supabase)](templates/supabase/)
 [![AI Ready](https://img.shields.io/badge/AI%20Ready-Antigravity%20%7C%20Cursor%20%7C%20Claude-8A2BE2)](./AGENTS.md)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](./core/docs/PROJECT_GUIDELINES.md)
 
@@ -66,6 +67,10 @@ bash <(curl -fsSL https://raw.githubusercontent.com/dinethsiriwardana/ai-agent-i
 > # NestJS
 > npx @nestjs/cli new myapp && cd myapp
 > bash <(curl -fsSL https://raw.githubusercontent.com/dinethsiriwardana/ai-agent-instructions-template/main/scripts/init-template.sh)
+>
+> # Supabase
+> mkdir myapp && cd myapp && npx supabase init
+> bash <(curl -fsSL https://raw.githubusercontent.com/dinethsiriwardana/ai-agent-instructions-template/main/scripts/init-template.sh)
 > ```
 
 ---
@@ -88,7 +93,7 @@ Pass configuration directly via CLI flags for non-interactive setups, Docker con
 
 ```bash
 bash scripts/init-template.sh \
-  --stack <nextjs|nestjs|flutter> \
+  --stack <nextjs|nestjs|flutter|supabase> \
   --target <target-directory> \
   --name "Product Name" \
   --description "One-sentence pitch" \
@@ -110,19 +115,19 @@ bash scripts/init-template.sh \
 
 ## 🏗️ Stack Overview & Architecture Matrix
 
-| Concern | 🌐 Next.js (`templates/nextjs`) | ⚙️ NestJS (`templates/nestjs`) | 📱 Flutter (`templates/flutter`) |
-|---|---|---|---|
-| **Primary Focus** | Full-Stack Web Application | Modular REST API Backend | Cross-Platform Mobile Client |
-| **Architecture** | Feature-first, layered | Module-per-feature, layered | Clean Architecture, feature-first |
-| **Layering** | `UI -> hooks -> route -> service -> repo -> DB` | `Controller -> Service -> Repository -> DB` | `presentation -> domain <- data` |
-| **Language / Runtime** | TypeScript `strict` / Node LTS | TypeScript `strict` / Node LTS | Dart 3 (sound null safety) / Flutter Stable |
-| **State / Async** | TanStack Query + Server Components | Stateless services, Redis caching | BLoC (`flutter_bloc`), `bloc_concurrency` |
-| **Validation / DTOs** | Zod (single source of truth for types) | Zod (`nestjs-zod`) + OpenAPI / Swagger | `freezed` + `json_serializable` (immutable) |
-| **Data Access** | Drizzle ORM on PostgreSQL | Drizzle ORM on PostgreSQL | Dio HTTP client + `flutter_secure_storage` |
-| **Styling & UI** | Tailwind CSS 4 with owned theme tokens | Structured JSON envelopes (`docs/API_RULES.md`) | Theme tokens, Material 3, shared widgets |
-| **Centralized Locales** | `locales/en.json` (and `es.json`) | `locales/en.json` (and `es.json`) | `lib/l10n/app_en.arb` via `l10n.yaml` |
-| **Testing Suite** | Vitest (unit), Playwright (E2E) | Jest + `@nestjs/testing` (unit), Supertest (E2E) | `flutter_test`, `bloc_test`, `mocktail` |
-| **Quality Gate** | `typecheck && lint && test && build` | `typecheck && lint && test && test:e2e && build` | `format && analyze && test && build apk` |
+| Concern | 🌐 Next.js (`templates/nextjs`) | ⚙️ NestJS (`templates/nestjs`) | 📱 Flutter (`templates/flutter`) | ⚡ Supabase (`templates/supabase`) |
+|---|---|---|---|---|
+| **Primary Focus** | Full-Stack Web Application | Modular REST API Backend | Cross-Platform Mobile Client | BaaS, PostgreSQL, RLS & Edge Platform |
+| **Architecture** | Feature-first, layered | Module-per-feature, layered | Clean Architecture, feature-first | Declarative SQL + Feature-first SDK/Edge |
+| **Layering** | `UI -> hooks -> route -> service -> repo -> DB` | `Controller -> Service -> Repository -> DB` | `presentation -> domain <- data` | `Edge/Client -> Service -> Repo -> RLS -> DB` |
+| **Language / Runtime** | TypeScript `strict` / Node LTS | TypeScript `strict` / Node LTS | Dart 3 (sound null safety) / Flutter Stable | PostgreSQL 15+ (PL/pgSQL) + TypeScript / Deno |
+| **State / Async** | TanStack Query + Server Components | Stateless services, Redis caching | BLoC (`flutter_bloc`), `bloc_concurrency` | Realtime (`Broadcast` & `Presence`) + Queues |
+| **Validation / DTOs** | Zod (single source of truth for types) | Zod (`nestjs-zod`) + OpenAPI / Swagger | `freezed` + `json_serializable` (immutable) | Zod + `supabase gen types typescript` |
+| **Data Access** | Drizzle ORM on PostgreSQL | Drizzle ORM on PostgreSQL | Dio HTTP client + `flutter_secure_storage` | `@supabase/supabase-js` + Mandatory RLS |
+| **Styling & UI / Rules** | Tailwind CSS 4 with owned theme tokens | Structured JSON envelopes (`docs/API_RULES.md`) | Theme tokens, Material 3, shared widgets | Schema, RLS, Storage & Edge (`docs/SUPABASE_RULES.md`) |
+| **Centralized Locales** | `locales/en.json` (and `es.json`) | `locales/en.json` (and `es.json`) | `lib/l10n/app_en.arb` via `l10n.yaml` | `locales/en.json` (and `es.json`) |
+| **Testing Suite** | Vitest (unit), Playwright (E2E) | Jest + `@nestjs/testing` (unit), Supertest (E2E) | `flutter_test`, `bloc_test`, `mocktail` | `pgTAP` (`supabase test db`) + Vitest |
+| **Quality Gate** | `typecheck && lint && test && build` | `typecheck && lint && test && test:e2e && build` | `format && analyze && test && build apk` | `typecheck && lint && test && build` |
 
 ---
 
@@ -164,13 +169,20 @@ bash scripts/init-template.sh \
 │   │   ├── README.md                   # First steps and scaffolding guide for NestJS
 │   │   └── stack.conf                  # NestJS metadata and quality gate definitions
 │   │
-│   └── flutter/                        # Flutter mobile rules, templates, and Clean Architecture
-│       ├── AGENTS.md                   # Strict Clean Architecture guidelines for Flutter
-│       ├── docs/                       # PROJECT_PLAN, TASK_LIST, DECISIONS, UI_RULES
-│       ├── l10n.yaml                   # Flutter localization config
-│       ├── lib/l10n/                   # ARB resource bundles for UI words & error failures
-│       ├── README.md                   # First steps and scaffolding guide for Flutter
-│       └── stack.conf                  # Flutter metadata and quality gate definitions
+│   ├── flutter/                        # Flutter mobile rules, templates, and Clean Architecture
+│   │   ├── AGENTS.md                   # Strict Clean Architecture guidelines for Flutter
+│   │   ├── docs/                       # PROJECT_PLAN, TASK_LIST, DECISIONS, UI_RULES
+│   │   ├── l10n.yaml                   # Flutter localization config
+│   │   ├── lib/l10n/                   # ARB resource bundles for UI words & error failures
+│   │   ├── README.md                   # First steps and scaffolding guide for Flutter
+│   │   └── stack.conf                  # Flutter metadata and quality gate definitions
+│   │
+│   └── supabase/                       # Supabase PostgreSQL, RLS, Auth, Storage & Edge Functions
+│       ├── AGENTS.md                   # Strict coding, RLS, and layering guidelines for Supabase
+│       ├── docs/                       # PROJECT_PLAN, TASK_LIST, DECISIONS, SUPABASE_RULES
+│       ├── locales/                    # Centralized error codes & system copy (en.json, es.json)
+│       ├── README.md                   # First steps and CLI scaffolding guide for Supabase
+│       └── stack.conf                  # Supabase metadata and quality gate definitions
 │
 └── scripts/
     └── init-template.sh                # Multi-stack project generator & dependency installer
@@ -223,6 +235,22 @@ flutter pub add --dev build_runner freezed json_serializable bloc_test mocktail 
 
 # 3. Verify quality gate locally
 dart format --set-exit-if-changed . && flutter analyze && flutter test --coverage && flutter build apk --debug
+```
+
+---
+
+### D. Supabase (Database, RLS, Auth, Storage & Edge Functions)
+```bash
+# 1. Initialize Supabase CLI & TypeScript environment
+npx supabase init
+pnpm init
+
+# 2. Install core runtime & dev dependencies
+pnpm add @supabase/supabase-js zod
+pnpm add -D supabase typescript tsx vitest @types/node eslint prettier
+
+# 3. Verify quality gate locally
+pnpm typecheck && pnpm lint && pnpm test && pnpm build
 ```
 
 ---
@@ -302,7 +330,7 @@ Contributions, issues, and feature requests are welcome!
 4. Ensure all placeholder generator tests pass:
    ```bash
    T=$(mktemp -d)
-   for s in nextjs nestjs flutter; do
+   for s in nextjs nestjs flutter supabase; do
      bash scripts/init-template.sh --stack $s --target "$T/$s" --name "App" --description "Desc" --owner "Owner"
      grep -RE "\{\{(PROJECT_NAME|ONE_LINE_DESCRIPTION|OWNER_NAME|STACK_LABEL|QUALITY_GATE)\}\}" "$T/$s" && echo "Error: unhandled placeholder in $s"
    done
@@ -320,10 +348,11 @@ This project is open-source software licensed under the **[MIT License](./LICENS
 
 ## 📜 Version History
 
-**TEMPLATE_VERSION: 2.6.0**
+**TEMPLATE_VERSION: 2.7.0**
 
 | Version | Description |
 |---|---|
+| **2.7.0** | Added dedicated **Supabase** template (`templates/supabase/`) alongside `nextjs`, `nestjs`, and `flutter`, including `AGENTS.md`, `docs/SUPABASE_RULES.md`, `docs/PROJECT_PLAN.md`, `docs/TASK_LIST.md`, `docs/DECISIONS.md`, `locales/`, `README.md`, and `stack.conf` auto-setup in `scripts/init-template.sh`. |
 | **2.6.0** | Added 3-stage branching strategy (`dev-test` local -> `dev` QA -> `main` Prod), `core/BRANCHES.md` central branch registry, `core/scripts/git-flow.mjs` CLI automation (`branch:start`, `branch:sync`, `branch:pr`, `branch:finish`, `branch:list`), environment variable scoping (`Production Only` vs `Preview / Development Only` with `Dev_*` fallback), and versioned data-safe DB migration rules (merge-only prod migrations). |
 | **2.5.0** | Polished repository presentation: added MIT License (`LICENSE`), hero banner, modern shields badges, architectural comparison matrix, and quick navigation. |
 | **2.4.0** | Enhanced `scripts/init-template.sh` and `templates/<stack>/stack.conf` to support remote GitHub one-liner execution (`curl`), existing-project stack auto-detection (`flutter create myapp && cd myapp`), and automatic package/dependency installation (`setup_stack`). |

@@ -6,10 +6,11 @@
 
 ## 1. Repository Purpose
 
-This repository is a **multi-stack starter template** designed to bootstrap the documentation, architecture rules, workflows, and CI configurations for three stacks:
+This repository is a **multi-stack starter template** designed to bootstrap the documentation, architecture rules, workflows, and CI configurations for four stacks:
 1. **Next.js** (`templates/nextjs/`)
 2. **NestJS** (`templates/nestjs/`)
 3. **Flutter** (`templates/flutter/`)
+4. **Supabase** (`templates/supabase/`)
 
 It contains **architecture rules, documentation templates, and CI configs** only (no pre-scaffolded application code).
 
@@ -52,7 +53,7 @@ It contains **architecture rules, documentation templates, and CI configs** only
    - Always verify the generator script against a clean temporary directory:
      ```bash
      T=$(mktemp -d)
-     for s in nextjs nestjs flutter; do
+     for s in nextjs nestjs flutter supabase; do
        bash scripts/init-template.sh --stack $s --target "$T/$s" --name "Test App" --description "Desc" --owner "Agent"
      done
      rm -rf "$T"
